@@ -66,7 +66,7 @@ const borrar =(descripcion)=>{
     cargarDb();
 
     let nuevoListado = listadoPorHacer.filter(tarea=>{
-        return tarea.descripcion !== descripcion
+        return tarea.descripcion !== descripcion;
     });
     if(listadoPorHacer.length === nuevoListado.length){
         return false;
