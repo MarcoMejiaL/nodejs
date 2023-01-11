@@ -1,33 +1,19 @@
 /* import express from 'express'; */
 const express = require('express');
 const bodyParser = require('body-parser')
-const router = express.Router();
-const {success,error} = require('./module/response')
 
+
+
+/* const router = require('./components/messages/network') */
+const router = require('./module/routes')
 
 let app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
-app.use(router)
-
-router.get('/message',(req,res)=>{
-    console.log(req.headers);
-    res.header({
-        "custom-header":"Valor Personalizado"
-    })
-    
-    success(req, res,"una respuesta chida")
-})
+//app.use(router)
+router(app)
 
 
-router.post('/message',(req,res)=>{
-
-    if(req.query.error == "ok"){
-        error(req,res,'Error Simulado', 400)
-    }
-    /* res.send('Hola maquinola desde message') */
-    success(req,res, "Creado Correctamente")
-})
 
 
 /* 
