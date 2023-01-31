@@ -1,5 +1,6 @@
 /* import express from 'express'; */
 const express = require('express');
+
 const bodyParser = require('body-parser')
 
 
@@ -23,4 +24,4 @@ app.use('/',(req,res)=>{
 
 app.use('/app', express.static('public'))
 app.listen(3000)
-console.log('la aplicacion esta funcionando en el puerto 3000');
+console.log('la aplicacion esta funcionando en el puerto 3000 ssss');
