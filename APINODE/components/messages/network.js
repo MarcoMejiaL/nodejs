@@ -21,7 +21,7 @@ router.post('/',(req,res)=>{
     addMessage(req.body.user,req.body.message).then((respuesta)=>{
         success(req,res,respuesta,200 )}
     ).catch((err)=>{
-        error(req,res,'Error Simulado', 500, err)
+        error(req,res,'Error Simulado ss', 500, err)
     })
     
         

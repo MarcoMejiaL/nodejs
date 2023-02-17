@@ -8,7 +8,7 @@ db.set('strictQuery',false)
 db.connect(URL,{
     useNewUrlParser:true
 })
-const conection = db.connection
+const conection = db.connection;
 conection.once('open',()=>{
     console.info(`Coneccion realizada con exito URL: ${URL}` )
 })
