@@ -1,18 +1,20 @@
 const express = require("express")
-
+const contadoresService = require("../services/contadores.service")
+    
 const router = express.Router()
+
+const serviceContadores = new contadoresService();
 
 
 router.get("/",(req,res)=>{
-    res.send("todos los contadores")
+    const contadoreslist = serviceContadores.find();
+    res.json(contadoreslist)
 })
 
 router.get("/:contadorId",(req,res)=>{
     const {contadorId} = req.params;
-    res.send({
-        contadorId,
-        nombre:"marco"
-    })
+    const contadoreslist = serviceContadores.findOnde(contadorId)
+    res.send(contadoreslist)
 })
 
 router.post("/",(req,res)=>{

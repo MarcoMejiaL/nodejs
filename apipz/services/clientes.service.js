@@ -16,7 +16,13 @@ class clienteServices{
         }
     }
     
-    create(){
+    create(data){
+        const newCliente ={
+            id:faker.datatype.uuid(),
+            ...data
+        }
+        this.clientes.push(newCliente)
+        return newCliente
 
     }
 
@@ -27,9 +33,23 @@ class clienteServices{
         return this.clientes.find(item=> item.id ===clienteId)
     }
 
-    update(){}
+    update(clienteId,changes){
+        const index = this.clientes.findIndex(item => item.id === clienteId );
+        if(index === -1){
+            throw new Error('Cliente no encontrado')
+        }
+        this.clientes[index]=changes
+        return this.clientes[index]
+    }
 
-    delete(){}
+    delete(clienteId){
+        const index = this.clientes.findIndex(item => item.id === clienteId)
+        if(index === -1){
+            throw new Error( "elemento no localizado")
+        }
+        this.clientes.splice(index,1)
+        return {clienteId,message:true}
+    }
 
 }
 
