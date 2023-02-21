@@ -1,7 +1,7 @@
 const express = require("express")
 const routerApi = require("./routes")
 
-const {logErrors,errorHandler} = require("./middlewares/error.handler")
+const {logErrors,errorHandler,boomErrorHandler} = require("./middlewares/error.handler")
 
 const app = express()
 const port = 3000
@@ -16,9 +16,10 @@ app.get("/",(req,res)=>{
 
 
 app.listen(port,()=>{
-    console.log("se esta corriendo")
+    console.log(`esta funcionando en el puerto ${port}`)
 })
 
 routerApi(app)
 app.use(logErrors)
+app.use(boomErrorHandler)
 app.use(errorHandler)

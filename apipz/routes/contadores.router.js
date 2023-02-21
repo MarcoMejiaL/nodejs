@@ -6,15 +6,22 @@ const router = express.Router()
 const serviceContadores = new contadoresService();
 
 
-router.get("/",(req,res)=>{
-    const contadoreslist = serviceContadores.find();
+router.get("/",async(req,res)=>{
+    const contadoreslist = await serviceContadores.find();
     res.json(contadoreslist)
 })
 
-router.get("/:contadorId",(req,res)=>{
+router.get("/:contadorId",async(req,res,next)=>{
+
+    try {
+     
     const {contadorId} = req.params;
-    const contadoreslist = serviceContadores.findOnde(contadorId)
-    res.send(contadoreslist)
+    const contadoreslist = await serviceContadores.findOnde(contadorId)
+    res.send(contadoreslist)   
+    } catch (error) {
+        next(error)
+        
+    }
 })
 
 router.post("/",(req,res)=>{
@@ -23,16 +30,28 @@ router.post("/",(req,res)=>{
    res.status(201).json(newAcountand)
 })
 
-router.patch("/:contadorId", (req,res)=>{
+router.patch("/:contadorId", (req,res,next)=>{
+    try {
     const {contadorId} = req.params;
     const body =req.body;
     const contatoresList = serviceContadores.update(contadorId,body)
-    res.json(contatoresList)
+    res.json(contatoresList)    
+    } catch (error) {
+        next(error)
+    }
+    
 })
-router.delete("/:contadorId",(req,res)=>{
-    const {contadorId} =req.params;
-    const contadoreslist= serviceContadores.delete(contadorId)
-    res.json(contadoreslist)
+router.delete("/:contadorId",(req,res,next)=>{
+    try {
+        const {contadorId} =req.params;
+        const contadoreslist= serviceContadores.delete(contadorId)
+        res.json(contadoreslist)
+        
+    } catch (error) {
+        next(error)
+    }
+
+
 })
 
 

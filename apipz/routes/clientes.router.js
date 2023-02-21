@@ -33,7 +33,7 @@ router.post("/",async(req,res)=> {
         
 })
 
-router.patch("/:clienteId",async(req,res)=>{
+router.patch("/:clienteId",async(req,res,next)=>{
     try {
         const {clienteId} = req.params;
         const body = req.body;
@@ -41,9 +41,7 @@ router.patch("/:clienteId",async(req,res)=>{
         res.json(clientesList)
         
     } catch (error) {
-        res.status(404).json({
-            message:error.message
-        })
+        next(error)   
     }
 })
 

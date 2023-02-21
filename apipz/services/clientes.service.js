@@ -1,4 +1,8 @@
 const {faker} = require('@faker-js/faker')
+const boom = require("@hapi/boom")
+
+
+
 class clienteServices{
     constructor(){
         this.clientes = [];
@@ -34,15 +38,28 @@ class clienteServices{
         })
          
     }
-    async findOne(clienteId){
-        const nose = this.getToal()
-        return this.clientes.find(item=> item.id ===clienteId)
+    async findOne(clienteId/*idContador (se saca de la sesion) */){
+        
+        const cliente = this.clientes.find(item=> item.id ===clienteId)
+
+        if(!cliente){
+            throw boom.notFound("Cliente no encontrado")
+        }
+        /* 
+            const idContador = this.clientes.find(item.=>item.contadorId === clienteId)
+            if(idContador !==ContadorId){
+                trow boom.conflict("no tienes acceso a ese cliente")
+            }        
+        
+        */
+
+        return cliente
     }
 
     async update(clienteId,changes){
         const index = this.clientes.findIndex(item => item.id === clienteId );
         if(index === -1){
-            throw new Error('Cliente no encontrado')
+            throw boom.notFound("Cliente no encontrado")
         }
         this.clientes[index]=changes
         return this.clientes[index]
@@ -51,7 +68,7 @@ class clienteServices{
     async delete(clienteId){
         const index = this.clientes.findIndex(item => item.id === clienteId)
         if(index === -1){
-            throw new Error( "elemento no localizado")
+            throw boom.notFound("Cliente no encontrado")
         }
         this.clientes.splice(index,1)
         return {clienteId,message:true}

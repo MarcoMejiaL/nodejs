@@ -1,4 +1,5 @@
 const {faker} = require('@faker-js/faker')
+const boom = require("@hapi/boom")
 
 
 class contadoresService{
@@ -7,7 +8,8 @@ class contadoresService{
         this.contadores =[]
         this.genetare()
     }
-    genetare(){
+     genetare(){
+        
         const limit =20;
         for (let i =0; i <limit; i++){
             this.contadores.push({
@@ -17,14 +19,22 @@ class contadoresService{
             })
         }
     }
-    find(){
-        return this.contadores
+    async find(){
+        return new Promise((resolve,reject)=>{
+            setTimeout(() => {
+                resolve(this.contadores)
+            }, 5000);
+        })
     }
 
     findOnde(contadorId){
-        return this.contadores.find(item => item.id ===contadorId)
         
+        const contadorExist=this.contadores.find(item => item.id ===contadorId)
+        if(!contadorExist){
+            throw boom.notFound(`el contador con id: ${contadorId} no existe`)
+        }
         
+        return contadorExist
         
         
         
@@ -44,7 +54,7 @@ class contadoresService{
     update(contadorId, changes){
         const index = this.contadores.findIndex(item => item.id === contadorId)
         if(index === -1){
-            throw new Error("Contador no encontreado")
+            throw boom.notFound(`el contador con id: ${contadorId} no existe`)
             
         }
         const newAcountand = this.contadores[index]
@@ -59,7 +69,7 @@ class contadoresService{
     delete(contadorId){
         const index = this.contadores.findIndex(item => item.id === contadorId)
         if(index = -1){
-            throw new Error ("Contador no encontrado")
+            throw boom.notFound(`el contador con id: ${contadorId} no existe`)
 
         }
         this.contadores.splice(index,1)
