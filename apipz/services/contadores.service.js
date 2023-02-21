@@ -22,14 +22,49 @@ class contadoresService{
     }
 
     findOnde(contadorId){
-        return this.contadores.find(item => item.id === contadorId)
+        return this.contadores.find(item => item.id ===contadorId)
+        
+        
+        
+        
+        
+        
+        
     }
 
-    create(){}
+    create(data){
+        const newContador ={
+            id:faker.datatype.uuid(),
+            ...data
+        }
+        this.contadores.push(newContador)
+        return newContador
+    }
 
-    update(){}
+    update(contadorId, changes){
+        const index = this.contadores.findIndex(item => item.id === contadorId)
+        if(index === -1){
+            throw new Error("Contador no encontreado")
+            
+        }
+        const newAcountand = this.contadores[index]
+        this.contadores[index]={
+            ...newAcountand,
+            ...changes
+        }
+        return this.contadores[index]
+        
+    }
 
-    delete(){}
+    delete(contadorId){
+        const index = this.contadores.findIndex(item => item.id === contadorId)
+        if(index = -1){
+            throw new Error ("Contador no encontrado")
+
+        }
+        this.contadores.splice(index,1)
+        return {contadorId ,message:true}
+    }
 
 }
 

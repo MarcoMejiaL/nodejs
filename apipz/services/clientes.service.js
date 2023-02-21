@@ -16,7 +16,7 @@ class clienteServices{
         }
     }
     
-    create(data){
+    async create(data){
         const newCliente ={
             id:faker.datatype.uuid(),
             ...data
@@ -26,14 +26,20 @@ class clienteServices{
 
     }
 
-    find(){
-        return this.clientes
+    async find(){
+        return new Promise ((resolve,reject)=>{
+            setTimeout(()=>{
+                resolve(this.clientes)
+            },5000)
+        })
+         
     }
-    findOne(clienteId){
+    async findOne(clienteId){
+        const nose = this.getToal()
         return this.clientes.find(item=> item.id ===clienteId)
     }
 
-    update(clienteId,changes){
+    async update(clienteId,changes){
         const index = this.clientes.findIndex(item => item.id === clienteId );
         if(index === -1){
             throw new Error('Cliente no encontrado')
@@ -42,7 +48,7 @@ class clienteServices{
         return this.clientes[index]
     }
 
-    delete(clienteId){
+    async delete(clienteId){
         const index = this.clientes.findIndex(item => item.id === clienteId)
         if(index === -1){
             throw new Error( "elemento no localizado")
