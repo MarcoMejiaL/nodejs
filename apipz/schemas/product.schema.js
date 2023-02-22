@@ -1,12 +1,16 @@
 const Joi = require("joi")
 
-const id= Joi.string().uuid();
+const clienteId= Joi.string().uuid();
 const name = Joi.string().alphanum().min(3).max(20);
 const empresa = Joi.string().alphanum().min(3).max(100)
 
-const createContadorSchema = Joi.object({
+const createSchema = Joi.object({
     name: name.required(),
     empresa: empresa.required()
 })
+const getDataSchema= Joi.object({
+    clienteId: clienteId.required(),
+  });
 
-module.exports= {createContadorSchema}
+
+module.exports= {createSchema,getDataSchema}

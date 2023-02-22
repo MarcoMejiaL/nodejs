@@ -1,5 +1,7 @@
 const express = require("express")
 const clienteServices = require("../services/clientes.service")
+const validatorHandler = require('../middlewares/validator.handler')
+const {createSchema,getDataSchema}= require("../schemas/product.schema")
 const router = express.Router()
 
 const clientes = new clienteServices();
@@ -9,15 +11,17 @@ router.get('/',async(req,res)=>{
     res.json(clientesList)
 })
 
-router.get('/:clienteId' ,async(req,res,next)=>{
-    try {
-        const {clienteId} = req.params
-        const clientesList = await clientes.findOne(clienteId);
-        res.json(clientesList)
+router.get('/:clienteId' 
+,validatorHandler(getDataSchema,'params')
+    ,async(req,res,next)=>{
+        try {
+            const {clienteId} = req.params
+            const clientesList = await clientes.findOne(clienteId);
+            res.json(clientesList)
         
-    } catch (error) {
-     next(error)   
-    }
+        } catch (error) {
+            next(error)   
+        }
 
 
     
@@ -25,7 +29,9 @@ router.get('/:clienteId' ,async(req,res,next)=>{
 
 })
 
-router.post("/",async(req,res)=> {
+router.post("/",
+validatorHandler(createSchema,'body'),
+async(req,res)=> {
    
     const body = req.body;
     const newCliente = await clientes.create(body)
@@ -33,7 +39,10 @@ router.post("/",async(req,res)=> {
         
 })
 
-router.patch("/:clienteId",async(req,res,next)=>{
+router.patch("/:clienteId",
+validatorHandler(getDataSchema,'params'),
+validatorHandler(createSchema,'body'),
+async(req,res,next)=>{
     try {
         const {clienteId} = req.params;
         const body = req.body;
@@ -45,7 +54,9 @@ router.patch("/:clienteId",async(req,res,next)=>{
     }
 })
 
-router.delete("/:clienteId",async(req,res)=>{
+router.delete("/:clienteId",
+validatorHandler(getDataSchema,'params'),
+async(req,res)=>{
     const {clienteId} = req.params;
     const clientesList = await clientes.delete(clienteId)
     res.json(clientesList)

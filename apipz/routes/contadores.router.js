@@ -1,5 +1,7 @@
 const express = require("express")
 const contadoresService = require("../services/contadores.service")
+const validatorHandler = require('../middlewares/validator.handler')
+const {createSchema} = require("../schemas/product.schema")
     
 const router = express.Router()
 

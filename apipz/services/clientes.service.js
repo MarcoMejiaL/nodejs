@@ -61,7 +61,11 @@ class clienteServices{
         if(index === -1){
             throw boom.notFound("Cliente no encontrado")
         }
-        this.clientes[index]=changes
+        const newClient = this.clientes[index]
+        this.clientes[index]={
+            ...newClient,
+            ...changes
+        }
         return this.clientes[index]
     }
 
