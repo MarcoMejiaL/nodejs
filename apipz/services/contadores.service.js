@@ -1,15 +1,18 @@
-const {faker} = require('@faker-js/faker')
+/* const {faker} = require('@faker-js/faker') */
 const boom = require("@hapi/boom")
+const sequelize = require('../libs/sequelize');
 
 
 class contadoresService{
 
     constructor(){
         this.contadores =[]
-        this.genetare()
+        /* this.generate() */
+        /* this.pool = pool;
+        this.pool.on('error', (err)=>console.log(err)) */
     }
-     genetare(){
-        
+     /* generate(){
+
         const limit =20;
         for (let i =0; i <limit; i++){
             this.contadores.push({
@@ -18,28 +21,29 @@ class contadoresService{
                 empresa: faker.commerce.department(),
             })
         }
-    }
+    } */
     async find(){
-        return new Promise((resolve,reject)=>{
-            setTimeout(() => {
-                resolve(this.contadores)
-            }, 5000);
-        })
+      const query = 'SELECT * FROM public."Contadores"';
+    const [data] = await sequelize.query(query);
+    return {
+      data
+    }
     }
 
-    findOnde(contadorId){
-        
-        const contadorExist=this.contadores.find(item => item.id ===contadorId)
-        if(!contadorExist){
-            throw boom.notFound(`el contador con id: ${contadorId} no existe`)
+    async findOne(contadorId){
+      const query = `SELECT * FROM public."Contadores" WHERE "idContadores"='${contadorId}' `
+
+        const rta = await this.pool.query(query)
+        if(rta.rowCount ==0){
+
+          throw boom.notFound(`el contador con id: ${contadorId} no existe`)
         }
-        
-        return contadorExist
-        
-        
-        
-        
-        
+        else{
+
+          console.log(rta.rowCount);
+          return rta.rows;
+        }
+
     }
 
     create(data){
@@ -55,7 +59,7 @@ class contadoresService{
         const index = this.contadores.findIndex(item => item.id === contadorId)
         if(index === -1){
             throw boom.notFound(`el contador con id: ${contadorId} no existe`)
-            
+
         }
         const newAcountand = this.contadores[index]
         this.contadores[index]={
@@ -63,7 +67,7 @@ class contadoresService{
             ...changes
         }
         return this.contadores[index]
-        
+
     }
 
     delete(contadorId){

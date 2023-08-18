@@ -6,20 +6,10 @@ const boom = require("@hapi/boom")
 class clienteServices{
     constructor(){
         this.clientes = [];
-        this.generate();
+
     }
 
-    generate(){
-        const limit = 100
-        for(let i =0; i<limit; i++){
-            this.clientes.push({
-                id:faker.datatype.uuid(),
-                name:faker.commerce.productName(),
-                price: faker.commerce.price()
-            })
-        }
-    }
-    
+
     async create(data){
         const newCliente ={
             id:faker.datatype.uuid(),
@@ -31,29 +21,26 @@ class clienteServices{
     }
 
     async find(){
-        return new Promise ((resolve,reject)=>{
-            setTimeout(()=>{
-                resolve(this.clientes)
-            },5000)
-        })
-         
+      const query = 'SELECT * FROM public."Clientes"';
+      const rta = await this.pool.query(query);
+      return rta.rows;
+
     }
     async findOne(clienteId/*idContador (se saca de la sesion) */){
-        
-        const cliente = this.clientes.find(item=> item.id ===clienteId)
 
-        if(!cliente){
-            throw boom.notFound("Cliente no encontrado")
-        }
-        /* 
-            const idContador = this.clientes.find(item.=>item.contadorId === clienteId)
-            if(idContador !==ContadorId){
-                trow boom.conflict("no tienes acceso a ese cliente")
-            }        
-        
-        */
+      const query = `SELECT * FROM public."Clientes" WHERE "idClientes"='${clienteId}' `
 
-        return cliente
+      const rta = await this.pool.query(query)
+      if(rta.rowCount ==0){
+
+        throw boom.notFound(`el contador con id: ${clienteId} no existe`)
+      }
+      else{
+
+        console.log(rta.rowCount);
+        return rta.rows;
+      }
+
     }
 
     async update(clienteId,changes){

@@ -2,7 +2,7 @@ const express = require("express")
 const contadoresService = require("../services/contadores.service")
 const validatorHandler = require('../middlewares/validator.handler')
 const {createSchema} = require("../schemas/product.schema")
-    
+
 const router = express.Router()
 
 const serviceContadores = new contadoresService();
@@ -16,13 +16,13 @@ router.get("/",async(req,res)=>{
 router.get("/:contadorId",async(req,res,next)=>{
 
     try {
-     
+
     const {contadorId} = req.params;
-    const contadoreslist = await serviceContadores.findOnde(contadorId)
-    res.send(contadoreslist)   
+    const contadoreslist = await serviceContadores.findOne(contadorId)
+    res.send(contadoreslist)
     } catch (error) {
         next(error)
-        
+
     }
 })
 
@@ -37,18 +37,18 @@ router.patch("/:contadorId", (req,res,next)=>{
     const {contadorId} = req.params;
     const body =req.body;
     const contatoresList = serviceContadores.update(contadorId,body)
-    res.json(contatoresList)    
+    res.json(contatoresList)
     } catch (error) {
         next(error)
     }
-    
+
 })
 router.delete("/:contadorId",(req,res,next)=>{
     try {
         const {contadorId} =req.params;
         const contadoreslist= serviceContadores.delete(contadorId)
         res.json(contadoreslist)
-        
+
     } catch (error) {
         next(error)
     }
