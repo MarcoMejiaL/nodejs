@@ -2,6 +2,7 @@
 const boom = require("@hapi/boom")
 const sequelize = require('../libs/sequelize');
 
+const{ models} = require('../libs/sequelize')
 
 class contadoresService{
 
@@ -23,11 +24,8 @@ class contadoresService{
         }
     } */
     async find(){
-      const query = 'SELECT * FROM public."Contadores"';
-    const [data] = await sequelize.query(query);
-    return {
-      data
-    }
+      const rta = await models.Empresas.findAll();
+    return rta
     }
 
     async findOne(contadorId){
