@@ -24,24 +24,18 @@ class contadoresService{
         }
     } */
     async find(){
-      const rta = await models.Empresas.findAll();
+      const rta = await models.Contadores.findAll();
     return rta
     }
 
     async findOne(contadorId){
-      const query = `SELECT * FROM public."Contadores" WHERE "idContadores"='${contadorId}' `
-
-        const rta = await this.pool.query(query)
-        if(rta.rowCount ==0){
-
-          throw boom.notFound(`el contador con id: ${contadorId} no existe`)
-        }
-        else{
-
-          console.log(rta.rowCount);
-          return rta.rows;
-        }
-
+      const rta = await models.Contadores.findOne({where:{contadores_id:contadorId}})
+      if(rta == null){
+        throw boom.notFound(`el contador con id: ${contadorId} no existe`)
+    }
+    else{
+      return rta
+    }
     }
 
     create(data){

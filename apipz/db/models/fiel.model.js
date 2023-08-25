@@ -40,6 +40,7 @@ const FielesSchema ={
   },
   fechamodicifacion:{
     allowNull:true,
+    field:'fecha_modificacion',
     type:DataTypes.DATE
   }
 
