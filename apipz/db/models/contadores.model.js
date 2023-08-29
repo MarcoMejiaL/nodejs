@@ -15,7 +15,7 @@ const ContadoresSchema = {
   },
   nombre:{
     allowNull:false,
-    type:DataTypes.INTEGER(30)
+    type:DataTypes.STRING(30)
 
   },
   apellidoPaterno:{
@@ -23,10 +23,10 @@ const ContadoresSchema = {
     type: DataTypes.STRING(30),
     field:'apellido_paterno'
   },
-  apellido_materno:{
+  apellidoMaterno:{
     allowNull:false,
     type:DataTypes.STRING(30),
-    fiel:'apellido_materno'
+    field:'apellido_materno'
 
 
   },
@@ -41,7 +41,8 @@ const ContadoresSchema = {
   fechaAlta:{
     allowNull:false,
     field:'fecha_alta',
-    type:DataTypes.DATE
+    type:DataTypes.DATE,
+    defaultValue: Sequelize.NOW
   },
   fechaBaja:{
     allowNull:true,
@@ -63,6 +64,10 @@ const ContadoresSchema = {
   pass:{
     allowNull:true,
     type:DataTypes.STRING(30)
+  },
+  activo:{
+    allowNull:true,
+    type:DataTypes.INTEGER
   }
 
 }

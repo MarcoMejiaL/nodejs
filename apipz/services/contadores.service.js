@@ -24,41 +24,40 @@ class contadoresService{
         }
     } */
     async find(){
-      const rta = await models.Contadores.findAll();
+      const rta = await models.Contadores.findAll({
+        where:{
+          activo : 1
+        }
+      });
     return rta
     }
 
     async findOne(contadorId){
-      const rta = await models.Contadores.findOne({where:{contadores_id:contadorId}})
+      const rta = await models.Contadores.findByPk(contadorId)
       if(rta == null){
-        throw boom.notFound(`el contador con id: ${contadorId} no existe`)
+        return  boom.notFound(`el contador con id: ${contadorId} no existe`)
     }
     else{
       return rta
     }
     }
 
-    create(data){
-        const newContador ={
-            id:faker.datatype.uuid(),
-            ...data
-        }
-        this.contadores.push(newContador)
-        return newContador
+    async create(data){
+      try {
+        const newContador = await models.Contadores.create(data)
+        return newContador;
+      } catch (error) {
+        return (error)
+      }
+
     }
 
-    update(contadorId, changes){
-        const index = this.contadores.findIndex(item => item.id === contadorId)
-        if(index === -1){
-            throw boom.notFound(`el contador con id: ${contadorId} no existe`)
+    async update(contadorId, changes){
+        const contador = await this.findOne(contadorId)
 
-        }
-        const newAcountand = this.contadores[index]
-        this.contadores[index]={
-            ...newAcountand,
-            ...changes
-        }
-        return this.contadores[index]
+        const rta = await contador.update(changes)
+
+        return rta
 
     }
 
@@ -71,6 +70,14 @@ class contadoresService{
         this.contadores.splice(index,1)
         return {contadorId ,message:true}
     }
+
+    desactivar(contadorId){
+      const contador = this.findOne(contadorId)
+      const rta = contador.update({activo:0})
+      return rta
+
+    }
+
 
 }
 

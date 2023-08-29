@@ -1,7 +1,7 @@
 const express = require("express")
 const contadoresService = require("../services/contadores.service")
 const validatorHandler = require('../middlewares/validator.handler')
-const {createSchema} = require("../schemas/product.schema")
+const {createContador} = require("../schemas/contador.schema")
 
 const router = express.Router()
 
@@ -26,11 +26,17 @@ router.get("/:contadorId",async(req,res,next)=>{
     }
 })
 
-router.post("/",(req,res)=>{
-    const body = req.body;
+router.post("/",
+  validatorHandler(createContador, 'body'),(req,res)=>{
+    const body = req.body
+    const newAcountand = serviceContadores.create(body)
+    res.status(201).json(newAcountand)
+  }
+
+   /*  const body = req.body;
    const newAcountand =  serviceContadores.create(body)
-   res.status(201).json(newAcountand)
-})
+   res.status(201).json(newAcountand) */
+)
 
 router.patch("/:contadorId", (req,res,next)=>{
     try {

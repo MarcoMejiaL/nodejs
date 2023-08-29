@@ -1,6 +1,6 @@
 const Joi = require("joi")
 
-const clienteId= Joi.string().uuid();
+const clienteId= Joi.string().uuid()
 const name = Joi.string().alphanum().min(3).max(20);
 const empresa = Joi.string().alphanum().min(3).max(100)
 
