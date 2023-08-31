@@ -13,6 +13,16 @@ class fielesService{
     const rta = await models.Fieles.findAll()
     return rta
   }
+
+  async create(data){
+    try {
+      const newFiel =await models.Fieles.create(data)
+      return newFiel
+    } catch (error) {
+      return (error)
+    }
+
+  }
 }
 
 

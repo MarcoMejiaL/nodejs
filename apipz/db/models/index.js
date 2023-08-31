@@ -6,8 +6,8 @@ const {Direccion,DireccionSchema} = require('./direccion.model')
 
 
 function setupModels(sequelize){
-  Clientes.init(ClientesSchema, Clientes.config(sequelize))
   Empresas.init(EmpresasSchema, Empresas.config(sequelize))
+  Clientes.init(ClientesSchema, Clientes.config(sequelize))
   Contadores.init(ContadoresSchema, Contadores.config(sequelize))
   Fieles.init(FielesSchema, Fieles.config(sequelize))
   Direccion.init(DireccionSchema,Direccion.config(sequelize))

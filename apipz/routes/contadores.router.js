@@ -1,24 +1,33 @@
 const express = require("express")
 const contadoresService = require("../services/contadores.service")
 const validatorHandler = require('../middlewares/validator.handler')
-const {createContador} = require("../schemas/contador.schema")
+const {createContador,findAccountandSchema}= require("../schemas/contador.schema")
 
 const router = express.Router()
 
 const serviceContadores = new contadoresService();
 
 
-router.get("/",async(req,res)=>{
-    const contadoreslist = await serviceContadores.find();
+router.get("/",async(req,res,next)=>{
+
+    try {
+      const contadoreslist = await serviceContadores.find();
     res.json(contadoreslist)
+    } catch (error) {
+      next(error)
+
+    }
 })
 
-router.get("/:contadorId",async(req,res,next)=>{
+router.get("/:contadoresId",
+validatorHandler(findAccountandSchema,'params'),
+
+async(req,res,next)=>{
 
     try {
 
-    const {contadorId} = req.params;
-    const contadoreslist = await serviceContadores.findOne(contadorId)
+    const {contadoresId} = req.params;
+    const contadoreslist = await serviceContadores.findOne(contadoresId)
     res.send(contadoreslist)
     } catch (error) {
         next(error)
@@ -49,6 +58,20 @@ router.patch("/:contadorId", (req,res,next)=>{
     }
 
 })
+
+/* router.patch("/reingreso/:contadorId",
+validatorHandler(findAccountandSchema,'params'),(req,res,next)=>{
+  console.log(req);
+  try {
+  const {contadorId} = req.params;
+  const body =req.body;
+  const contatoresList = serviceContadores.update(contadorId,body)
+  res.json(contatoresList)
+  } catch (error) {
+      next(error)
+  }
+
+}) */
 router.delete("/:contadorId",(req,res,next)=>{
     try {
         const {contadorId} =req.params;

@@ -1,4 +1,5 @@
 /* const {faker} = require('@faker-js/faker') */
+
 const boom = require("@hapi/boom")
 const sequelize = require('../libs/sequelize');
 
@@ -8,43 +9,45 @@ class contadoresService{
 
     constructor(){
         this.contadores =[]
-        /* this.generate() */
-        /* this.pool = pool;
-        this.pool.on('error', (err)=>console.log(err)) */
-    }
-     /* generate(){
+        this.fecha = new Date()
 
-        const limit =20;
-        for (let i =0; i <limit; i++){
-            this.contadores.push({
-                id: faker.datatype.uuid(),
-                name: faker.commerce.productName(),
-                empresa: faker.commerce.department(),
-            })
-        }
-    } */
+    }
+
     async find(){
       const rta = await models.Contadores.findAll({
         where:{
           activo : 1
         }
-      });
-    return rta
+      })
+      if(rta.length == 0){
+        throw  boom.notFound(`no hay datos para mostrar`)
+      }
+      else{
+        return rta
+      }
+
+
     }
 
     async findOne(contadorId){
       const rta = await models.Contadores.findByPk(contadorId)
-      if(rta == null){
-        return  boom.notFound(`el contador con id: ${contadorId} no existe`)
+      if(!rta){
+        throw  boom.notFound(`el contador con id: ${contadorId} no existe`)
     }
     else{
+
       return rta
     }
     }
 
     async create(data){
       try {
-        const newContador = await models.Contadores.create(data)
+        const newContador = await models.Contadores.create({
+          ...data,
+          activo:1,
+
+
+        })
         return newContador;
       } catch (error) {
         return (error)
@@ -53,30 +56,44 @@ class contadoresService{
     }
 
     async update(contadorId, changes){
+      try {
         const contador = await this.findOne(contadorId)
 
-        const rta = await contador.update(changes)
+        const rta = await contador.update({...changes,
+          fechaModificacion: this.fecha
+        })
 
         return rta
+      } catch (error) {
+        return(error)
+      }
+
 
     }
 
-    delete(contadorId){
-        const index = this.contadores.findIndex(item => item.id === contadorId)
-        if(index = -1){
-            throw boom.notFound(`el contador con id: ${contadorId} no existe`)
+    async delete(contadorId){
+       /* const contador = await this.findOne(contadorId)
+       const rta = await contador.destroy()
 
-        }
-        this.contadores.splice(index,1)
-        return {contadorId ,message:true}
-    }
-
-    desactivar(contadorId){
-      const contador = this.findOne(contadorId)
-      const rta = contador.update({activo:0})
+       return {rta} */
+       const contador =  await this.findOne(contadorId)
+      const rta = await contador.update({activo:0,fecha_modificacion: this.fecha})
       return rta
 
     }
+
+    /* async desactivar(contadorId){
+      const contador =  await this.findOne(contadorId)
+      const rta = await contador.update({activo:0,fechaModificacion: this.fecha})
+      return rta
+
+    }
+
+    async reingreso(contadorId){
+      const contador = await models.Contadores.findByPk(contadorId)
+      const rta = await contador.update({activo:0,fechaModificacion: this.fecha})
+      return rta
+    } */
 
 
 }

@@ -57,10 +57,17 @@ const ClientesSchema = {
     allowNull:false,
     field:'fecha_alta',
     type:DataTypes.DATE,
+    defaultValue: Sequelize.NOW
   },
   fechaActualizacion:{
-    allowNull:true,
-    field:'fecha_cambios',
+    allowNull:false,
+    field:'fecha_modificacion',
+    type:DataTypes.DATE,
+    defaultValue: Sequelize.NOW
+  },
+  fechaBaja:{
+    allowNull:false,
+    field:'fecha_baja',
     type:DataTypes.DATE
   },
   idcontadores:{
@@ -88,7 +95,9 @@ class Clientes extends Model{
       sequelize,
       tableName:CLIENTES_TABLE,
       modelName:'Clientes',
-      timestamps:false
+      timestamps:false,
+
+
     }
   }
 }

@@ -1,6 +1,7 @@
-const {faker} = require('@faker-js/faker')
+
 const boom = require("@hapi/boom")
 
+const{ models} = require('../libs/sequelize')
 
 
 class clienteServices{
@@ -10,35 +11,35 @@ class clienteServices{
     }
 
 
-    async create(data){
-        const newCliente ={
-            id:faker.datatype.uuid(),
-            ...data
-        }
-        this.clientes.push(newCliente)
-        return newCliente
 
-    }
 
     async find(){
-      const query = 'SELECT * FROM public."Clientes"';
-      const rta = await this.pool.query(query);
-      return rta.rows;
+      const rta = await models.Clientes.findAll({
+        where:{
+          activo : 1
+        }
+      });
+    return rta
 
     }
-    async findOne(clienteId/*idContador (se saca de la sesion) */){
+    async findOne(clienteId){
 
-      const query = `SELECT * FROM public."Clientes" WHERE "idClientes"='${clienteId}' `
+      const rta = await models.Clientes.findByPk(clienteId)
+      if(rta == null){
+        return  boom.notFound(`el cliente con id: ${clienteId} no existe`)
+    }
+    else{
+      return rta
+    }
 
-      const rta = await this.pool.query(query)
-      if(rta.rowCount ==0){
+    }
 
-        throw boom.notFound(`el contador con id: ${clienteId} no existe`)
-      }
-      else{
-
-        console.log(rta.rowCount);
-        return rta.rows;
+    async create(data){
+      try {
+        const newContador = await models.Contadores.create(data)
+        return newContador;
+      } catch (error) {
+        return (error)
       }
 
     }

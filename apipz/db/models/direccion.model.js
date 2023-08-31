@@ -50,9 +50,29 @@ const DireccionSchema = {
     allowNull:false,
     type:DataTypes.STRING(40)
   },
-  estado:{
+  activo:{
     allowNull:false,
     type:DataTypes.STRING(40)
+  },
+  fechaAlta:{
+    allowNull:false,
+    type:DataTypes.DATE,
+    defaultValue: Sequelize.NOW,
+    field:'fecha_alta'
+
+  },
+  fechaModificacion:{
+    allowNull:false,
+    type:DataTypes.DATE,
+    defaultValue: Sequelize.NOW,
+    field:'fecha_modificacion'
+
+
+  },
+  fechaBaja:{
+    allowNull:false,
+    type:DataTypes.DATE,
+    field:'fecha_baja'
   },
   idCliente:{
     allowNull:false,

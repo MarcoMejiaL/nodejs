@@ -1,6 +1,7 @@
 
-const {Model, DataTypes, Sequelize } = require('sequelize')
+const {Model, DataTypes, Sequelize, BelongsTo } = require('sequelize')
 
+const {Empresas,EmpresasSchema,EMPRESAS_TABLE} = require('./empresas.model')
 
 
 const CONTADORES_TABLE = 'contadores';
@@ -49,16 +50,23 @@ const ContadoresSchema = {
     field:'fecha_baja',
     type:DataTypes.DATE
   },
-  empresa:{
-    allowNull:false,
+  fechaModificacion:{
+    allowNull:true,
+    field:'fecha_modificacion',
+    type:DataTypes.DATE,
+    defaultValue: Sequelize.NOW
+
+  },
+  empresaId:{
+    allowNull:true,
     type:DataTypes.INTEGER,
+
 
   },
   usuario:{
-    allowNull:false,
+    allowNull:true,
     type:DataTypes.STRING(30),
-
-
+    unique:true
 
   },
   pass:{
@@ -68,24 +76,33 @@ const ContadoresSchema = {
   activo:{
     allowNull:true,
     type:DataTypes.INTEGER
+
   }
 
 }
 
 
+
+
 class Contadores extends Model{
+
   static associate(){
 
+
   }
+
   static config(sequelize){
     return{
       sequelize,
       tableName:CONTADORES_TABLE,
       modelName:'Contadores',
-      timestamps:false
+      timestamps:false,
+
     }
   }
+
 }
+
 
 
 module.exports = {CONTADORES_TABLE, ContadoresSchema, Contadores}

@@ -30,15 +30,17 @@ const FielesSchema ={
   },
   pass:{
     allowNull:false,
-    type:DataTypes.INTEGER(40)
+    type:DataTypes.STRING(40)
 
   },
   fechaAlta:{
     allowNull:false,
     field:'fecha_alta',
-    type:DataTypes.DATE
+    type:DataTypes.DATE,
+    defaultValue: Sequelize.NOW
+
   },
-  fechamodicifacion:{
+  fechaModificacion:{
     allowNull:true,
     field:'fecha_modificacion',
     type:DataTypes.DATE
