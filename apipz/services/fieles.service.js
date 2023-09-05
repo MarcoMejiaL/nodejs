@@ -6,12 +6,35 @@ const{ models} = require('../libs/sequelize')
 class fielesService{
   constructor(){
     this.fieles = []
+    this.dateNow = new Date()
   }
 
 
   async find(){
+
     const rta = await models.Fieles.findAll()
-    return rta
+    if(rta.length == 0){
+      throw  boom.notFound(`no hay Fieles para mostrar`)
+    }
+    else{
+      return rta
+    }
+
+
+  }
+  async findOne(idFiel){
+
+    const rta = await models.Fieles.find({where:{
+      cliente_id : idFiel
+    }})
+
+    if(!rta){
+      throw boom.notFound(`no existe  fiele registradas para ese cliente`)
+    }
+    else{
+      return rta
+    }
+
   }
 
   async create(data){
@@ -22,6 +45,19 @@ class fielesService{
       return (error)
     }
 
+  }
+  async update(idFiel,changes){
+    try{
+      const rta = await models.Fieles.find({where:{
+        cliente_id : idFiel
+      }})
+      const cambios = await rta.update({...changes,
+        fechaModificacion: this.dateNow
+      })
+
+    }catch(error){
+      return(error)
+    }
   }
 }
 

@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "lint": "eslint"
+    "lint": "eslint",
+    "migrations:generate":"sequelize-cli migration:generate --name",
+    "migrations:run":"sequelize-cli db:migrate"
   },
   "keywords": [],
   "author": "Marco Mejia Lopez <marcomejia159010@gmail.com>",
@@ -26,6 +28,7 @@
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
     "nodemon": "^3.0.1",
-    "prettier": "^2.8.4"
+    "prettier": "^2.8.4",
+    "sequelize-cli": "^6.6.1"
   }
 }

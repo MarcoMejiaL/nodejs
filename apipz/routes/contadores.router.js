@@ -36,9 +36,9 @@ async(req,res,next)=>{
 })
 
 router.post("/",
-  validatorHandler(createContador, 'body'),(req,res)=>{
+  validatorHandler(createContador, 'body'),async(req,res)=>{
     const body = req.body
-    const newAcountand = serviceContadores.create(body)
+    const newAcountand = await serviceContadores.create(body)
     res.status(201).json(newAcountand)
   }
 
@@ -47,11 +47,11 @@ router.post("/",
    res.status(201).json(newAcountand) */
 )
 
-router.patch("/:contadorId", (req,res,next)=>{
+router.patch("/:contadorId", async(req,res,next)=>{
     try {
     const {contadorId} = req.params;
     const body =req.body;
-    const contatoresList = serviceContadores.update(contadorId,body)
+    const contatoresList = await serviceContadores.update(contadorId,body)
     res.json(contatoresList)
     } catch (error) {
         next(error)
@@ -72,10 +72,10 @@ validatorHandler(findAccountandSchema,'params'),(req,res,next)=>{
   }
 
 }) */
-router.delete("/:contadorId",(req,res,next)=>{
+router.delete("/:contadorId",async(req,res,next)=>{
     try {
         const {contadorId} =req.params;
-        const contadoreslist= serviceContadores.delete(contadorId)
+        const contadoreslist= await serviceContadores.delete(contadorId)
         res.json(contadoreslist)
 
     } catch (error) {
@@ -83,6 +83,29 @@ router.delete("/:contadorId",(req,res,next)=>{
     }
 
 
+})
+router.patch("/:contadorId/reingreso",async(req,res,next)=>{
+
+  try {
+    const {contadorId} = req.params;
+    const contatorReingreso = await serviceContadores.reingreso(contadorId);
+  res.json(contatorReingreso)
+  } catch (error) {
+    next(error)
+
+  }
+})
+
+router.patch("/:contadorId/baja",async(req,res,next)=>{
+  try{
+    const {contadorId} = req.params;
+
+    const contadorBaja = await serviceContadores.contadorBaja(contadorId);
+    res.json(contadorBaja)
+
+  }catch(error){
+    next(error)
+  }
 })
 
 

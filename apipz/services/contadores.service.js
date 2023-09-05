@@ -20,11 +20,9 @@ class contadoresService{
         }
       })
       if(rta.length == 0){
-        throw  boom.notFound(`no hay datos para mostrar`)
+        throw boom.notFound(`no hay datos para mostrar`)
       }
-      else{
-        return rta
-      }
+      return rta
 
 
     }
@@ -32,12 +30,9 @@ class contadoresService{
     async findOne(contadorId){
       const rta = await models.Contadores.findByPk(contadorId)
       if(!rta){
-        throw  boom.notFound(`el contador con id: ${contadorId} no existe`)
+         throw boom.notFound(`el contador con id: ${contadorId} no existe`)
     }
-    else{
-
-      return rta
-    }
+    return rta
     }
 
     async create(data){
@@ -56,17 +51,16 @@ class contadoresService{
     }
 
     async update(contadorId, changes){
-      try {
-        const contador = await this.findOne(contadorId)
+
+      const contador = await this.findOne(contadorId)
+
 
         const rta = await contador.update({...changes,
           fechaModificacion: this.fecha
         })
 
         return rta
-      } catch (error) {
-        return(error)
-      }
+
 
 
     }
@@ -82,20 +76,19 @@ class contadoresService{
 
     }
 
-    /* async desactivar(contadorId){
-      const contador =  await this.findOne(contadorId)
+    async contadorBaja(contadorId){
+      const contador = await this.findOne(contadorId)
       const rta = await contador.update({activo:0,fechaModificacion: this.fecha})
       return rta
 
     }
 
     async reingreso(contadorId){
-      const contador = await models.Contadores.findByPk(contadorId)
-      const rta = await contador.update({activo:0,fechaModificacion: this.fecha})
+      const contador = await this.findOne(contadorId)
+      const rta = await contador.update({activo:1,fechaModificacion: this.fecha})
       return rta
-    } */
 
-
+    }
 }
 
 

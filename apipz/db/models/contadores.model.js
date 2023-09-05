@@ -60,6 +60,9 @@ const ContadoresSchema = {
   empresaId:{
     allowNull:true,
     type:DataTypes.INTEGER,
+    reference:{
+
+    }
 
 
   },

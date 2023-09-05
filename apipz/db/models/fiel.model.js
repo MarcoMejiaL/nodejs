@@ -1,6 +1,7 @@
 
 const {Model, DataTypes, Sequelize} = require('sequelize')
-
+const {CLIENTES_TABLE} = require('./clientes.model')
+const {CONTADORES_TABLE} = require('./contadores.model')
 
 const FIELES_TABLE = 'fieles';
 
@@ -15,18 +16,33 @@ const FielesSchema ={
   cliente:{
     allowNull: false,
     field:"cliente_id",
-    type: DataTypes.INTEGER
+    type: DataTypes.INTEGER,
+    unique:true,
+    references:{
+      model: CLIENTES_TABLE,
+      key:'clientes_id'
+    },
+    onUpdate:'CASCADE',
+    onDelete: 'SET NULL'
   },
   contador:{
     allowNull:false,
     field: 'contador_id',
-    type:DataTypes.INTEGER
+    type:DataTypes.INTEGER,
+    unique:true,
+    references:{
+      model:CONTADORES_TABLE,
+      key: 'contadores_id'
+    },
+    onUpdate:'CASCADE',
+    onDelete: 'SET NULL'
 
 
   },
   fechaCaducidad:{
     allowNull:false,
-    type:DataTypes.DATE
+    type:DataTypes.DATE,
+    field:'fecha_caducidad'
   },
   pass:{
     allowNull:false,
@@ -50,7 +66,9 @@ const FielesSchema ={
 
 }
 class Fieles extends Model{
-  static associate(){
+  static associate(models){
+    this.belongsTo(models.clientes,{as: 'cliente'});
+    this.belongsTo(models.contadores,{as:'contador'});
 
   }
   static config(sequelize){
