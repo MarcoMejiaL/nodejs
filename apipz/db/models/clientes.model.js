@@ -1,6 +1,8 @@
 
 const {Model, DataTypes, Sequelize} = require('sequelize')
 
+const {CONTADORES_TABLE, ContadoresSchema, Contadores} = require('./contadores.model')
+const {Empresas,EmpresasSchema,EMPRESAS_TABLE} = require('./empresas.model')
 
 const CLIENTES_TABLE = 'clientes';
 
@@ -74,20 +76,40 @@ const ClientesSchema = {
 
     allowNull:false,
     field:'contador_acargo',
-    type:DataTypes.INTEGER
+    type:DataTypes.INTEGER,
+    references:{
+      model:CONTADORES_TABLE,
+      key: 'contadores_id'
+    },
+    onUpdate:'CASCADE',
+    onDelete: 'SET NULL'
+
+
   },
+
   idempresa:{
 
     allowNull:false,
     field:'empresa_acargo',
-    type:DataTypes.INTEGER
+    type:DataTypes.INTEGER,
+    references:{
+      model:EMPRESAS_TABLE,
+      key: 'empresas_id'
+    },
+    onUpdate:'CASCADE',
+    onDelete: 'SET NULL'
+
+
+
   },
 
 
 }
 
 class Clientes extends Model{
-  static associate(){
+  static associate(models){
+    this.belongsTo(models.empresas,{as:'empresa'})
+    this.belongsTo(models.contadores,{as:'contador'});
 
   }
   static config(sequelize){

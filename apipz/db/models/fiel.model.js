@@ -29,7 +29,6 @@ const FielesSchema ={
     allowNull:false,
     field: 'contador_id',
     type:DataTypes.INTEGER,
-    unique:true,
     references:{
       model:CONTADORES_TABLE,
       key: 'contadores_id'
@@ -67,8 +66,8 @@ const FielesSchema ={
 }
 class Fieles extends Model{
   static associate(models){
-    this.belongsTo(models.clientes,{as: 'cliente'});
-    this.belongsTo(models.contadores,{as:'contador'});
+    this.belongsTo(models.clientes,{as: 'cliente'} );
+    this.hasMany(models.contadores,{as:'contador'});
 
   }
   static config(sequelize){

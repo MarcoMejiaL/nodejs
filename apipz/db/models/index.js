@@ -14,7 +14,7 @@ function setupModels(sequelize){
 
 
 
-  Fieles.associate(sequelize.models)
+
 }
 
 

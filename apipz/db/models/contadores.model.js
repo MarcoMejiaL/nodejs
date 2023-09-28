@@ -60,9 +60,12 @@ const ContadoresSchema = {
   empresaId:{
     allowNull:true,
     type:DataTypes.INTEGER,
-    reference:{
-
-    }
+    references:{
+      model:EMPRESAS_TABLE,
+      key: 'empresas_id'
+    },
+    onUpdate:'CASCADE',
+    onDelete: 'SET NULL'
 
 
   },
@@ -89,7 +92,8 @@ const ContadoresSchema = {
 
 class Contadores extends Model{
 
-  static associate(){
+  static associate(models){
+    this.belongsTo(models.empresas,{as:'empresa'})
 
 
   }

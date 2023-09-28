@@ -24,12 +24,10 @@ class fielesService{
   }
   async findOne(idFiel){
 
-    const rta = await models.Fieles.find({where:{
-      cliente_id : idFiel
-    }})
+    const rta = await models.Fieles.findByPk(idFiel)
 
     if(!rta){
-      throw boom.notFound(`no existe  fiele registradas para ese cliente`)
+      throw boom.notFound(`no existe  fiel registradas para ese cliente`)
     }
     else{
       return rta
