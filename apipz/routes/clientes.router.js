@@ -6,9 +6,16 @@ const router = express.Router()
 
 const clientes = new clienteServices();
 
-router.get('/',async(req,res)=>{
-    const clientesList =await clientes.find();
-    res.json(clientesList)
+router.get('/',async(req,res,next)=>{
+
+
+    try {
+      const clientesList =await clientes.find();
+      res.json(clientesList)
+    } catch (error) {
+      next(error)
+
+    }
 })
 
 router.get('/:clienteId'

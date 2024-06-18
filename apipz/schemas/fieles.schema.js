@@ -5,6 +5,8 @@ const fechaCaducidad = Joi.date()
 const pass = Joi.string().alphanum()
 
 
+
+
 /* const create */
 
 const fielRegister = Joi.object({
@@ -15,6 +17,7 @@ const fielRegister = Joi.object({
   )
 const findOneFiel= Joi.object({
   idFiel: idFiel.required()
+  //titularFiel: titularFiel.required()
 })
 
 module.exports = {findOneFiel,fielRegister}
